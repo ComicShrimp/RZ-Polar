@@ -191,18 +191,18 @@ numero_amostras_frame = tk.LabelFrame(
 )
 
 # Definindo a posição da labelframe
-numero_amostras_frame.place(
-    in_=janela_principal, relx=0.87, rely=0.18, anchor=tk.CENTER
-)
+# numero_amostras_frame.place(
+#     in_=janela_principal, relx=0.87, rely=0.18, anchor=tk.CENTER
+# )
 
 
 numero_amostras_infoframe = tk.Label(
     numero_amostras_frame,
     text=str(config.NUMERO_AMOSTRAS),
 )
-numero_amostras_infoframe.place(relx=0.5, rely=0.15, anchor=tk.N)
+# numero_amostras_infoframe.place(relx=0.5, rely=0.15, anchor=tk.N)
 numero_amostras_entrada = tk.Entry(numero_amostras_frame, width=12)
-numero_amostras_entrada.place(relx=0.5, rely=0.55, anchor=tk.N)
+# numero_amostras_entrada.place(relx=0.5, rely=0.55, anchor=tk.N)
 numero_amostras_entrada.bind("<Return>", set_numero_amostras)
 
 
@@ -216,17 +216,17 @@ taxa_simbolo_Frame = tk.LabelFrame(
 )
 
 # Definindo a posição da labelframe
-taxa_simbolo_Frame.place(in_=janela_principal,
-                         relx=0.87, rely=0.3, anchor=tk.CENTER)
+# taxa_simbolo_Frame.place(in_=janela_principal,
+#                          relx=0.87, rely=0.3, anchor=tk.CENTER)
 
 
 taxa_simbolo_InfoLabel = tk.Label(
     taxa_simbolo_Frame,
     text=str(config.TAXA_DE_SIMBOLO),
 )
-taxa_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
+# taxa_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
 input_taxa_simbolo = tk.Entry(taxa_simbolo_Frame, width=12)
-input_taxa_simbolo.place(relx=0.5, rely=0.55, anchor=tk.N)
+# input_taxa_simbolo.place(relx=0.5, rely=0.55, anchor=tk.N)
 input_taxa_simbolo.bind("<Return>", set_taxa_simbolo)
 
 
@@ -292,14 +292,14 @@ mapeamento_um_infoframe = tk.Label(
     mapeamento_frame,
     text="Bit 1 é igual a " + str(config.VALOR_DE_BITS_PARA_UM),
 )
-mapeamento_um_infoframe.place(relx=0.5, rely=0.1, anchor=tk.N)
+# mapeamento_um_infoframe.place(relx=0.5, rely=0.1, anchor=tk.N)
 mapeamento_um_entrada = tk.Entry(mapeamento_frame, width=12)
 
 mapeamento_zero_infoframe = tk.Label(
     mapeamento_frame,
     text="Bit 0 é igual a " + str(config.VALOR_DE_BITS_PARA_ZERO),
 )
-mapeamento_zero_infoframe.place(relx=0.5, rely=0.52, anchor=tk.N)
+# mapeamento_zero_infoframe.place(relx=0.5, rely=0.52, anchor=tk.N)
 mapeamento_zero_entrada = tk.Entry(mapeamento_frame, width=12)
 # mapeamento_zero_entrada.place(relx=0.5, rely=0.7, anchor=tk.N)
 
