@@ -270,18 +270,21 @@ input_taxa_simbolo = tk.Entry(taxa_simbolo_Frame, width=12)
 input_taxa_simbolo.bind("<Return>", set_taxa_simbolo)
 
 
+# definir a posição das informações
+# info_data = tk.Label(janela_principal, text="1 => 1")
+
 # Atribuindo padrões para a labelframe do Número de Simbolos
 numero_simbolo_Frame = tk.LabelFrame(
     janela_principal,
-    text="Número de Símbolos",
+    text="Mapeamento de bit: \n1 → 1 \n 0 → -1 \n\n Pulso Conformador:\n Retangular de meio período",
     width=180,
-    height=75,
+    height=150,
     borderwidth=0,
 )
 
 # Definindo a posição da labelframe
-# numero_simbolo_Frame.place(
-#     in_=janela_principal, relx=0.87, rely=0.42, anchor=tk.CENTER)
+numero_simbolo_Frame.place(
+    in_=janela_principal, relx=0.87, rely=0.42, anchor=tk.CENTER)
 
 
 numero_simbolo_InfoLabel = tk.Label(
@@ -296,7 +299,7 @@ pulso_conformador_frame = tk.LabelFrame(
     janela_principal,
     text="Pulso Conformador",
     width=180,
-    height=75,
+    height=150,
     borderwidth=0,
 )
 
