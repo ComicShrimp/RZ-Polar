@@ -1,5 +1,5 @@
-import random
 import tkinter as tk
+from math import ceil
 from tkinter import ttk
 
 import matplotlib
@@ -7,14 +7,9 @@ import matplotlib.animation as animation
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-from scipy import signal
-from scipy.fftpack import fft, fftshift
 
 import config
-from pulsos_conformadores import dicionario_pulso_conformador
-from sinais import sinal_analogico, sinal_sequencia_de_bits, sinal_digital
-from math import ceil
-from platform import system
+from sinais import sinal_digital, sinal_sequencia_de_bits
 
 matplotlib.use("TkAgg")
 
@@ -39,6 +34,13 @@ graficos = figura.subplots(3)
 
 canvas = FigureCanvasTkAgg(figura, janela_principal)
 canvas.get_tk_widget().place(x=1, y=1, relx=0.01, rely=0.01)
+
+
+def meio_periodo(taxa_amostragem: int):
+    meio = int(taxa_amostragem / 2)
+    pShaping = np.ones((1, taxa_amostragem), dtype=int)
+    pShaping[0, meio:] = 0
+    return pShaping[0]
 
 
 def funcao_iniciar():
@@ -78,12 +80,6 @@ def mapeamento_de_bits(
 
 def limpar_graficos():
 
-    # Sinal Analógico
-    # graficos[0].cla()
-    # graficos[0].set_ylabel("Sinal Analógico", fontweight="bold")
-    # graficos[0].set_ylim(config.MINIMO_EIXO_Y, config.MAXIMO_EIXO_Y)
-    # graficos[0].grid(True)
-
     # Sinal Sequência de Bits
     graficos[0].clear()
     graficos[0].set_ylabel("Sequência de Bits", fontweight="bold")
@@ -93,8 +89,7 @@ def limpar_graficos():
     # Sinal Digital referente a Sequência de Bits
     graficos[1].clear()
     graficos[1].set_ylabel("Sinal Digital", fontweight="bold")
-    graficos[1].set_ylim(config.MINIMO_EIXO_DIGITAL_Y,
-                         config.MAXIMO_EIXO_DIGITAL_Y)
+    graficos[1].set_ylim(config.MINIMO_EIXO_DIGITAL_Y, config.MAXIMO_EIXO_DIGITAL_Y)
     graficos[1].grid(True)
 
     # Sinal Pulso Conformador
@@ -115,25 +110,7 @@ def gerar_grafico(i):
 
         limpar_graficos()
 
-        """""" """
-        Antes da Geração da sequência de bits e do sinal digital correspondente
-        devemos passar a taxa de Símbolos recebida pela interface
-        como parâmetros para as funções
-
-        Obs: O valor fornecido pela interface está armazenado na variável `taxa_simbolo`
-        """ """"""
-
-        # Busca chave referênte ao pulso selecionado no combobox
-        sinal_pulso_conformador = dicionario_pulso_conformador.get(
-            combo_box_pulso_conformador.get()
-        )
-
-        # Chama função correspondente a operação acima
-        sinal_pulso_conformador = sinal_pulso_conformador(
-            config.TAXA_DE_SIMBOLO)
-
-        # Sinal Analógico
-        # graficos[0].plot(sinal_analogico(config.NUMERO_AMOSTRAS), "c")
+        sinal_pulso_conformador = meio_periodo(config.TAXA_DE_SIMBOLO)
 
         sequencia_de_bits = sinal_sequencia_de_bits(
             config.NUMERO_AMOSTRAS, config.TAXA_DE_SIMBOLO
@@ -160,8 +137,7 @@ def gerar_grafico(i):
             "r",
         )
         # Sinal Pulso Conformador
-        graficos[2].plot(range(0, config.TAXA_DE_SIMBOLO),
-                         sinal_pulso_conformador)
+        graficos[2].plot(range(0, config.TAXA_DE_SIMBOLO), sinal_pulso_conformador)
 
 
 def set_taxa_simbolo(event):
@@ -181,8 +157,7 @@ def set_taxa_simbolo(event):
 
 
 def set_numero_amostras(event):
-    numero_amostras_digitada = int(
-        numero_amostras_entrada.get().replace(",", "."))
+    numero_amostras_digitada = int(numero_amostras_entrada.get().replace(",", "."))
     if (
         numero_amostras_digitada >= 0
         and numero_amostras_digitada >= config.TAXA_DE_SIMBOLO
@@ -195,24 +170,6 @@ def set_numero_amostras(event):
         tk.messagebox.showerror("Erro", "Número de amostras inválida")
 
     numero_amostras_entrada.delete(0, tk.END)
-
-
-def set_mapeamento_um(event):
-    mapeamento_um_digitado = int(mapeamento_um_entrada.get())
-    config.VALOR_DE_BITS_PARA_UM = mapeamento_um_digitado
-    mapeamento_um_infoframe["text"] = "Bit 1 é igual a " + str(
-        config.VALOR_DE_BITS_PARA_UM
-    )
-    mapeamento_um_entrada.delete(0, tk.END)
-
-
-def set_mapeamento_zero(event):
-    mapeamento_zero_digitado = int(mapeamento_zero_entrada.get())
-    config.VALOR_DE_BITS_PARA_ZERO = mapeamento_zero_digitado
-    mapeamento_zero_infoframe["text"] = "Bit 0 é igual a " + str(
-        config.VALOR_DE_BITS_PARA_ZERO
-    )
-    mapeamento_zero_entrada.delete(0, tk.END)
 
 
 ani = animation.FuncAnimation(
@@ -231,18 +188,18 @@ numero_amostras_frame = tk.LabelFrame(
 )
 
 # Definindo a posição da labelframe
-# numero_amostras_frame.place(
-#     in_=janela_principal, relx=0.87, rely=0.18, anchor=tk.CENTER
-# )
+numero_amostras_frame.place(
+    in_=janela_principal, relx=0.87, rely=0.18, anchor=tk.CENTER
+)
 
 
 numero_amostras_infoframe = tk.Label(
     numero_amostras_frame,
     text=str(config.NUMERO_AMOSTRAS),
 )
-# numero_amostras_infoframe.place(relx=0.5, rely=0.15, anchor=tk.N)
+numero_amostras_infoframe.place(relx=0.5, rely=0.15, anchor=tk.N)
 numero_amostras_entrada = tk.Entry(numero_amostras_frame, width=12)
-# numero_amostras_entrada.place(relx=0.5, rely=0.55, anchor=tk.N)
+numero_amostras_entrada.place(relx=0.5, rely=0.55, anchor=tk.N)
 numero_amostras_entrada.bind("<Return>", set_numero_amostras)
 
 
@@ -256,17 +213,16 @@ taxa_simbolo_Frame = tk.LabelFrame(
 )
 
 # Definindo a posição da labelframe
-# taxa_simbolo_Frame.place(in_=janela_principal,
-#                          relx=0.87, rely=0.3, anchor=tk.CENTER)
+taxa_simbolo_Frame.place(in_=janela_principal, relx=0.87, rely=0.3, anchor=tk.CENTER)
 
 
 taxa_simbolo_InfoLabel = tk.Label(
     taxa_simbolo_Frame,
     text=str(config.TAXA_DE_SIMBOLO),
 )
-# taxa_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
+taxa_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
 input_taxa_simbolo = tk.Entry(taxa_simbolo_Frame, width=12)
-# input_taxa_simbolo.place(relx=0.5, rely=0.55, anchor=tk.N)
+input_taxa_simbolo.place(relx=0.5, rely=0.55, anchor=tk.N)
 input_taxa_simbolo.bind("<Return>", set_taxa_simbolo)
 
 
@@ -280,15 +236,14 @@ numero_simbolo_Frame = tk.LabelFrame(
 )
 
 # Definindo a posição da labelframe
-# numero_simbolo_Frame.place(
-#     in_=janela_principal, relx=0.87, rely=0.42, anchor=tk.CENTER)
+numero_simbolo_Frame.place(in_=janela_principal, relx=0.87, rely=0.42, anchor=tk.CENTER)
 
 
 numero_simbolo_InfoLabel = tk.Label(
     numero_simbolo_Frame,
     text=str(config.NUMERO_DE_SIMBOLO),
 )
-# numero_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
+numero_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
 
 
 # Atribuindo padrões para o combobox do pulso conformador
@@ -325,28 +280,21 @@ mapeamento_frame = tk.LabelFrame(
     borderwidth=0,
 )
 
-# Definindo a posição da labelframe
-# mapeamento_frame.place(in_=janela_principal, relx=0.87,
-#                        rely=0.715, anchor=tk.CENTER)
-
 
 mapeamento_um_infoframe = tk.Label(
     mapeamento_frame,
     text="Bit 1 é igual a " + str(config.VALOR_DE_BITS_PARA_UM),
 )
-# mapeamento_um_infoframe.place(relx=0.5, rely=0.1, anchor=tk.N)
+mapeamento_um_infoframe.place(relx=0.5, rely=0.1, anchor=tk.N)
 mapeamento_um_entrada = tk.Entry(mapeamento_frame, width=12)
-# mapeamento_um_entrada.place(relx=0.5, rely=0.28, anchor=tk.N)
-mapeamento_um_entrada.bind("<Return>", set_mapeamento_um)
 
 mapeamento_zero_infoframe = tk.Label(
     mapeamento_frame,
     text="Bit 0 é igual a " + str(config.VALOR_DE_BITS_PARA_ZERO),
 )
-# mapeamento_zero_infoframe.place(relx=0.5, rely=0.52, anchor=tk.N)
+mapeamento_zero_infoframe.place(relx=0.5, rely=0.52, anchor=tk.N)
 mapeamento_zero_entrada = tk.Entry(mapeamento_frame, width=12)
 # mapeamento_zero_entrada.place(relx=0.5, rely=0.7, anchor=tk.N)
-mapeamento_zero_entrada.bind("<Return>", set_mapeamento_zero)
 
 # Atribuindo os padrões do botão iniciar
 iniciar_butao = tk.Button(
