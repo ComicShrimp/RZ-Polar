@@ -9,7 +9,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
 import config
-from sinais import sinal_digital, sinal_sequencia_de_bits
 
 matplotlib.use("TkAgg")
 
@@ -18,7 +17,7 @@ janela_principal = tk.Tk()
 
 DPI = janela_principal.winfo_fpixels("1i")
 
-janela_principal.title("Gerador de Sinais")
+janela_principal.title("RZ - Polar")
 janela_principal.resizable(True, True)
 janela_principal.config(bg="white")
 
@@ -41,6 +40,25 @@ def meio_periodo(taxa_amostragem: int):
     pShaping = np.ones((1, taxa_amostragem), dtype=int)
     pShaping[0, meio:] = 0
     return pShaping[0]
+
+
+def sinal_sequencia_de_bits(numero_amostras: int, taxa_de_simbolo: int):
+    numero_de_simbolo = numero_amostras / taxa_de_simbolo
+
+    sinal_senquencia_bits = 2 * (
+        np.random.randint(1, 3, size=int(numero_de_simbolo)) - 1.5
+    )
+    return (sinal_senquencia_bits + 1) / 2
+
+
+def sinal_digital(pulso_conformador, sequencia_de_bits, numero_simbolos):
+    sinal_digital = []
+    for s in range(0, int(numero_simbolos)):
+        sinal_auxiliar = sequencia_de_bits[s] * pulso_conformador
+        for k in range(0, len(sinal_auxiliar)):
+            sinal_digital.append(sinal_auxiliar[k])
+
+    return sinal_digital
 
 
 def funcao_iniciar():
@@ -80,7 +98,6 @@ def mapeamento_de_bits(
 
 def limpar_graficos():
 
-    # Sinal Sequência de Bits
     # Sinal Sequência de Bits
     graficos[0].clear()
     graficos[0].set_ylabel("Sequência de Bits", fontweight="bold")
