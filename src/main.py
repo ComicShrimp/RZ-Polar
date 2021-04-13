@@ -89,8 +89,7 @@ def limpar_graficos():
     # Sinal Digital referente a Sequência de Bits
     graficos[1].clear()
     graficos[1].set_ylabel("Sinal Digital", fontweight="bold")
-    graficos[1].set_ylim(config.MINIMO_EIXO_DIGITAL_Y,
-                         config.MAXIMO_EIXO_DIGITAL_Y)
+    graficos[1].set_ylim(config.MINIMO_EIXO_DIGITAL_Y, config.MAXIMO_EIXO_DIGITAL_Y)
     graficos[1].grid(True)
 
     # Sinal Pulso Conformador
@@ -138,8 +137,7 @@ def gerar_grafico(i):
             "r",
         )
         # Sinal Pulso Conformador
-        graficos[2].plot(range(0, config.TAXA_DE_SIMBOLO),
-                         sinal_pulso_conformador)
+        graficos[2].plot(range(0, config.TAXA_DE_SIMBOLO), sinal_pulso_conformador)
 
 
 def set_taxa_simbolo(event):
@@ -151,7 +149,6 @@ def set_taxa_simbolo(event):
         config.TAXA_DE_SIMBOLO = taxa_de_simbolo_digitada
         config.NUMERO_DE_SIMBOLO = config.NUMERO_AMOSTRAS / config.TAXA_DE_SIMBOLO
         taxa_simbolo_InfoLabel["text"] = taxa_de_simbolo_digitada
-        numero_simbolo_InfoLabel["text"] = str(config.NUMERO_DE_SIMBOLO)
     else:
         tk.messagebox.showerror("Erro", "Taxa de símbolos inválida")
 
@@ -159,8 +156,7 @@ def set_taxa_simbolo(event):
 
 
 def set_numero_amostras(event):
-    numero_amostras_digitada = int(
-        numero_amostras_entrada.get().replace(",", "."))
+    numero_amostras_digitada = int(numero_amostras_entrada.get().replace(",", "."))
     if (
         numero_amostras_digitada >= 0
         and numero_amostras_digitada >= config.TAXA_DE_SIMBOLO
@@ -168,7 +164,6 @@ def set_numero_amostras(event):
         config.NUMERO_AMOSTRAS = numero_amostras_digitada
         config.NUMERO_DE_SIMBOLO = config.NUMERO_AMOSTRAS / config.TAXA_DE_SIMBOLO
         numero_amostras_infoframe["text"] = numero_amostras_digitada
-        numero_simbolo_InfoLabel["text"] = str(config.NUMERO_DE_SIMBOLO)
     else:
         tk.messagebox.showerror("Erro", "Número de amostras inválida")
 
@@ -191,18 +186,18 @@ numero_amostras_frame = tk.LabelFrame(
 )
 
 # Definindo a posição da labelframe
-# numero_amostras_frame.place(
-#     in_=janela_principal, relx=0.87, rely=0.18, anchor=tk.CENTER
-# )
+numero_amostras_frame.place(
+    in_=janela_principal, relx=0.87, rely=0.18, anchor=tk.CENTER
+)
 
 
 numero_amostras_infoframe = tk.Label(
     numero_amostras_frame,
     text=str(config.NUMERO_AMOSTRAS),
 )
-# numero_amostras_infoframe.place(relx=0.5, rely=0.15, anchor=tk.N)
+numero_amostras_infoframe.place(relx=0.5, rely=0.15, anchor=tk.N)
 numero_amostras_entrada = tk.Entry(numero_amostras_frame, width=12)
-# numero_amostras_entrada.place(relx=0.5, rely=0.55, anchor=tk.N)
+numero_amostras_entrada.place(relx=0.5, rely=0.55, anchor=tk.N)
 numero_amostras_entrada.bind("<Return>", set_numero_amostras)
 
 
@@ -216,17 +211,16 @@ taxa_simbolo_Frame = tk.LabelFrame(
 )
 
 # Definindo a posição da labelframe
-# taxa_simbolo_Frame.place(in_=janela_principal,
-#                          relx=0.87, rely=0.3, anchor=tk.CENTER)
+taxa_simbolo_Frame.place(in_=janela_principal, relx=0.87, rely=0.3, anchor=tk.CENTER)
 
 
 taxa_simbolo_InfoLabel = tk.Label(
     taxa_simbolo_Frame,
     text=str(config.TAXA_DE_SIMBOLO),
 )
-# taxa_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
+taxa_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
 input_taxa_simbolo = tk.Entry(taxa_simbolo_Frame, width=12)
-# input_taxa_simbolo.place(relx=0.5, rely=0.55, anchor=tk.N)
+input_taxa_simbolo.place(relx=0.5, rely=0.55, anchor=tk.N)
 input_taxa_simbolo.bind("<Return>", set_taxa_simbolo)
 
 
@@ -236,21 +230,14 @@ input_taxa_simbolo.bind("<Return>", set_taxa_simbolo)
 # Atribuindo padrões para a labelframe do Número de Simbolos
 numero_simbolo_Frame = tk.LabelFrame(
     janela_principal,
-    text="Mapeamento de bit: \n1 → 1 \n 0 → -1 \n\n Pulso Conformador:\n Retangular de meio período",
+    text="\n\nMapeamento de bit: \n\n1  →  1 \n 0  → -1 \n\n Pulso Conformador:\n Retangular de meio período",
     width=180,
     height=150,
     borderwidth=0,
 )
 
 # Definindo a posição da labelframe
-numero_simbolo_Frame.place(
-    in_=janela_principal, relx=0.87, rely=0.42, anchor=tk.CENTER)
-
-numero_simbolo_InfoLabel = tk.Label(
-    numero_simbolo_Frame,
-    text=str(config.NUMERO_DE_SIMBOLO),
-)
-numero_simbolo_InfoLabel.place(relx=0.5, rely=0.15, anchor=tk.N)
+numero_simbolo_Frame.place(in_=janela_principal, relx=0.87, rely=0.42, anchor=tk.CENTER)
 
 
 # Atribuindo padrões para o combobox do pulso conformador
@@ -261,22 +248,6 @@ pulso_conformador_frame = tk.LabelFrame(
     height=150,
     borderwidth=0,
 )
-
-# Definindo a posição para o pulso conformador
-# pulso_conformador_frame.place(
-#     in_=janela_principal, relx=0.87, rely=0.54, anchor=tk.CENTER
-# )
-
-combo_box_pulso_conformador = ttk.Combobox(
-    pulso_conformador_frame,
-    values=[
-        "Retangular: Meio Período",
-        "Retangular: Período Completo",
-        "Triangular",
-    ],
-)
-# combo_box_pulso_conformador.place(relx=0.5, rely=0.5, anchor=tk.N)
-combo_box_pulso_conformador.current(0)
 
 # Atribuindo padrões para a labelframe de Mapeamento
 mapeamento_frame = tk.LabelFrame(
