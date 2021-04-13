@@ -81,20 +81,22 @@ def mapeamento_de_bits(
 def limpar_graficos():
 
     # Sinal Sequência de Bits
+    # Sinal Sequência de Bits
     graficos[0].clear()
     graficos[0].set_ylabel("Sequência de Bits", fontweight="bold")
     graficos[0].set_ylim(config.MINIMO_EIXO_Y, config.MAXIMO_EIXO_Y)
+    graficos[0].set_xlim(0, config.NUMERO_DE_SIMBOLO)
     graficos[0].grid(True)
 
     # Sinal Digital referente a Sequência de Bits
     graficos[1].clear()
     graficos[1].set_ylabel("Sinal Digital", fontweight="bold")
     graficos[1].set_ylim(config.MINIMO_EIXO_DIGITAL_Y, config.MAXIMO_EIXO_DIGITAL_Y)
+    graficos[1].set_xlim(0, config.NUMERO_AMOSTRAS)
     graficos[1].grid(True)
 
     # Sinal Pulso Conformador
     graficos[2].clear()
-    graficos[2].set_xlabel("Tempo", fontweight="bold")
     graficos[2].set_ylabel("Pulso Conformador", fontweight="bold")
     graficos[2].set_ylim(config.MINIMO_EIXO_Y, config.MAXIMO_EIXO_Y)
     graficos[2].grid(True)
@@ -224,9 +226,6 @@ input_taxa_simbolo.place(relx=0.5, rely=0.55, anchor=tk.N)
 input_taxa_simbolo.bind("<Return>", set_taxa_simbolo)
 
 
-# definir a posição das informações
-# info_data = tk.Label(janela_principal, text="1 => 1")
-
 # Atribuindo padrões para a labelframe do Número de Simbolos
 numero_simbolo_Frame = tk.LabelFrame(
     janela_principal,
@@ -248,31 +247,6 @@ pulso_conformador_frame = tk.LabelFrame(
     height=150,
     borderwidth=0,
 )
-
-# Atribuindo padrões para a labelframe de Mapeamento
-mapeamento_frame = tk.LabelFrame(
-    janela_principal,
-    text="Mapeamento de bits",
-    width=180,
-    height=150,
-    borderwidth=0,
-)
-
-
-mapeamento_um_infoframe = tk.Label(
-    mapeamento_frame,
-    text="Bit 1 é igual a " + str(config.VALOR_DE_BITS_PARA_UM),
-)
-# mapeamento_um_infoframe.place(relx=0.5, rely=0.1, anchor=tk.N)
-mapeamento_um_entrada = tk.Entry(mapeamento_frame, width=12)
-
-mapeamento_zero_infoframe = tk.Label(
-    mapeamento_frame,
-    text="Bit 0 é igual a " + str(config.VALOR_DE_BITS_PARA_ZERO),
-)
-# mapeamento_zero_infoframe.place(relx=0.5, rely=0.52, anchor=tk.N)
-mapeamento_zero_entrada = tk.Entry(mapeamento_frame, width=12)
-# mapeamento_zero_entrada.place(relx=0.5, rely=0.7, anchor=tk.N)
 
 # Atribuindo os padrões do botão iniciar
 iniciar_butao = tk.Button(
